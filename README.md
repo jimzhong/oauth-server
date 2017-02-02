@@ -122,6 +122,5 @@ A successful responses contains at least the following infomation about the user
 
 ## References
 
-[Wechat OAuth Manual ](https://wohugb.gitbooks.io/wechat/content/qrconnent/README.html)
-
-[OAuth2](http://oauth.net/2/)
+1. [Wechat OAuth Manual ](https://wohugb.gitbooks.io/wechat/content/qrconnent/README.html)
+2. [OAuth2](http://oauth.net/2/)
