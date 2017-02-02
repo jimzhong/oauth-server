@@ -115,8 +115,10 @@ A successful responses contains at least the following infomation about the user
 ```json
 {
 "userid":"USERID",
-"nickname":"NICKNAME",
-"realname":"REALNAME"
+"realname":"REALNAME",
+"is_staff": true or false,
+"zjuid": 31300000123,
+"email": "xxx@xxx.com"
 }
 ```
 
