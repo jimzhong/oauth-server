@@ -7,11 +7,11 @@
 
 -- ---
 -- Table 'users'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `users`;
-		
+
 CREATE TABLE `users` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `username` VARCHAR(256) NOT NULL,
@@ -26,41 +26,37 @@ CREATE TABLE `users` (
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email`),
   UNIQUE KEY (`zjuid`),
-KEY (`email`),
-KEY (`username`),
-KEY (`zjuid`)
 ) CHARACTER SET utf8mb4;
 
 -- ---
 -- Table 'apps'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `apps`;
-		
+
 CREATE TABLE `apps` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `name` VARCHAR(1024) NOT NULL,
-  `publisher` VARCHAR(256) NOT NULL DEFAULT 'ZJUBTV',
+  `vendor` VARCHAR(256) NULL DEFAUL NULL,
   `secret` CHAR(256) NOT NULL,
   `redirect_uri` VARCHAR(1024) NOT NULL,
   `homepage_uri` VARCHAR(1024) NULL DEFAULT NULL,
   `logo_uri` VARCHAR(1024) NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`name`),
   UNIQUE KEY (`secret`),
   UNIQUE KEY (`redirect_uri`),
-KEY (`name`),
-KEY (`publisher`)
 ) CHARACTER SET utf8mb4;
 
 -- ---
 -- Table 'authorization'
--- 
+--
 -- ---
 
 DROP TABLE IF EXISTS `authorization`;
-		
+
 CREATE TABLE `authorization` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
   `user_id` INTEGER NULL DEFAULT NULL,
@@ -68,14 +64,13 @@ CREATE TABLE `authorization` (
   `refresh_token` CHAR(128) NOT NULL,
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `scope` CHAR(128) NULL DEFAULT NULL,
-  `update_time` TIMESTAMP NULL DEFAULT NULL,
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`user_id`, `app_id`, `scope`),
-KEY (`user_id`, `app_id`, `scope`)
 ) CHARACTER SET utf8mb4;
 
 -- ---
--- Foreign Keys 
+-- Foreign Keys
 -- ---
 
 ALTER TABLE `authorization` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
