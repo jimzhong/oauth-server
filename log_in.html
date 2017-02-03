@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--boot$jquery-->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="http://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>浙江大学电视台设备借用系统</title>
+
+    <style>
+        .div_main{
+            font-family: 'Microsoft Yahei','微软雅黑', sans-serif;
+            font-size: large;
+        }
+    </style>
+
+</head>
+<body class="container div_main" >
+
+    <nav class="navbar navbar-default" role="navigation" style="background: white; display: flex; padding: 16px; margin-top: 1.5rem;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header clearheader">
+                <a class="navbar-brand" href="#" style="padding: 0 1rem 0 1rem ;"><img src="logo.png" style="height:5rem"></a>
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6 col-xs-12 col-md-offset-4 col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="padding: 16px">
+                <h1 class="panel-title" style="font-size: 2rem">登陆</h1>
+            </div>
+
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label  class="col-xs-12 ">账号：</label>
+                        <div class="col-xs-12">
+                            <input type="text" class="form-control" id="username" placeholder="Account">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-xs-12 ">密码：</label>
+                        <div class="col-xs-12">
+                            <input type="passwordord" class="form-control" id="password" placeholder="password">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -1em">
+                        <div class=" col-xs-12">
+                            <div class="checkbox">
+                                <label style="font-size: small">
+                                    <input type="checkbox" > 自动登录
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button  type="submit" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">登陆</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<html>
