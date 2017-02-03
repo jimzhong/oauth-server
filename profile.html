@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <title>个人中心</title>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+     <script src="js/jquery-1.12.3.min.js"></script>
+     <script src="js/bootstrap.min.js"></script>
+     
+  </head>
+  <body class="container">
+     <nav class="navbar navbar-default navbar-inverse" style="margin-top: 16px;">
+       <p class="navbar-text">&nbsp&nbsp<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp个人中心</p>
+     </nav>
+     
+     <div class="table-responsive">
+     <table class="table table-striped"s>
+        <tr>
+           <td class="col-md-4">姓名</td>
+           <td>XXX</td>
+           <td></td>
+        </tr>
+        <tr>
+           <td>学号</td>
+           <td>3150100000</td>
+           <td></td>
+        </tr>
+        <tr>
+           <td>邮箱</td>
+           <td>test@zjubtv.com</td>
+           <td>
+             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#email_edit">修改
+             </button>
+             <div class="modal fade" id="email_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+               <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h5 class="modal-title" id="myModalLabel">邮箱修改</h4>
+               </div>
+              <div class="modal-body">
+                 <form action="#">
+                   <div class="form-group">
+                     <label>请输入新邮箱</label>
+                     <input type="email" class="form-control" id="MailID" placeholder="New Email">
+                   </div>
+                 </form>
+               </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="PreserveMail()">保存</button>
+             </div>
+           </div>
+          </div>
+          </div>
+           </td>
+        </tr>
+        <tr>
+           <td>手机号码</td>
+           <td>1880000000</td>
+           <td>
+             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#phone_edit">修改
+             </button>
+             <div class="modal fade" id="phone_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+               <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <form action="#">
+                <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                   <h5 class="modal-title" id="myModalLabel">手机号修改</h5>
+               </div>
+              <div class="modal-body">
+                 
+                   <div class="form-group">
+                     <label>请输入新手机号</label>
+                     <input type="email" class="form-control" id="PhoneNum" placeholder="New Phone Number">
+                   </div>
+                
+              </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="PreservePhone()">保存</button>
+             </div>
+            </form>
+           </div>
+          </div>
+          </div>
+           </td>
+        </tr>
+
+     </table>
+     </div>
+  </body>
+  <script>
+      function PreserveMail() {
+          var MailName = $('#MailID').val();
+
+          if (MailName == ""){
+              alert("请输入邮箱");
+              $("#MailName").focus();
+              return;
+          }
+      }
+
+      function PreservePhone() {
+          var MailName = $('#PhoneNum').val();
+
+          if (MailName == ""){
+              alert("请输入手机号");
+              $("#MailName").focus();
+              return;
+          }
+      }
+  </script>
+</html>
