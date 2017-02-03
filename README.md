@@ -147,7 +147,7 @@ A successful responses contains at least the following infomation about the user
 
 ## The length of parameters
 
-Name | Max length in bytes
+Name | Max length in ASCII characters
 -----|------------------
 App ID| 16
 App Secret | 64
