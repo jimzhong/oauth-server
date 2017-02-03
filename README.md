@@ -21,7 +21,7 @@ state | No | for CSRF protection, will be copied to redirect_uri
 
 If the user gives permission to this app, the authorization endpoint will redirect the user to `REDIRECT_URI?code=CODE&state=STATE`. The `REDIRECT_URI` is the redirect URI registered for that app in the database.
 
-If anything goes wrong, the user agent will be redirected to `REDIRECT_URI?error=ERRORMSG`. The possible values of `error` includes:
+If anything goes wrong, the user agent will be redirected to `REDIRECT_URI?error=ERRORMSG`. The possible values of `error` is defined in the RFC, common values are:
 
 Value | Description
 -----| -------------
@@ -50,6 +50,8 @@ Content-Type: application/x-www-form-urlencoded
 
 grant_type=authorization_code&code=tGzv3JOkF0XG5Qx2TlKWIA&appid=s6BhdRkqt3&appsecret=7Fjfp0ZBr1KtDRbnfVdmIw
 ```
+
+The lifetime of an authorization_code is only 300 seconds and an authorization_code can only be used once.
 
 The response body is in json format, for example
 ```json
@@ -86,7 +88,6 @@ Name | Description
 userid | the ID of the user
 access_token | access_token
 appid | AppID
-appsecret | AppSecret
 
 Successful responses have http status code 204.
 Failed responses have http status code 403.
@@ -103,18 +104,18 @@ Content-Type: application/x-www-form-urlencoded
 appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN&appsecret=7Fjfp0ZBr1KtDRbnfVdmIw
 ```
 
-If the old access_token is still valid. The server will not generate a new access_token. While the validity of the old access_token will be extended to 3600 seconds.
-
 Successful responses will be like
 ```json
 {
 "access_token":"ACCESS_TOKEN",
-"expires_in":3600,
+"expires_in": EXPIRE_TIME,
 "refresh_token":"REFRESH_TOKEN",
 "userid":"USERID",
 "scope":"SCOPE"
 }
 ```
+
+If there is a valid access_token, the `EXPIRE_TIME` reflects its remaining time, and the current access_token is return. Otherwise, a new access_token is generated and returned, with the `EXPIRE_TIME` set to 3600.
 
 Error messages are like
 ```json
@@ -131,7 +132,6 @@ Name | Description
 userid | the ID of the user
 access_token | access_token
 appid | AppID
-appsecret | AppSecret
 
 A successful responses contains at least the following infomation about the user. More fields will be added in the future.
 ```json
@@ -143,6 +143,17 @@ A successful responses contains at least the following infomation about the user
 "email": "xxx@xxx.com"
 }
 ```
+
+## The length of parameters
+
+Name | Max length in bytes
+-----|------------------
+App ID| 16
+App Secret | 64
+Authorization Code | 64
+Access Token | 64
+Refresh Token | 64
+User ID | 16
 
 ## References
 
