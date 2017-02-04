@@ -1,0 +1,19 @@
+.lay_top{
+    overflow: hidden;
+    height: 56px;
+    background-color: #51B7EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.accredit_site{
+    text-decoration: none;
+    color: #51B7EC;
+}
+td div{
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.final{
+    margin-top: 0px !important;
+}

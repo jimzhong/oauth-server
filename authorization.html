@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--boot$jquery-->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="http://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>确认授权</title>
+
+    <style>
+        .div_main{
+            font-family: 'Microsoft Yahei','微软雅黑', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lay_top">
+    <img src="logo2.png" height="52">
+</div>
+<div class="container">
+    <br>
+    <div class=" col-sm-offset-2 col-sm-8 col-xs-12 col-md-offset-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">登录 &nbsp<span style="font-size: large">|</span> 授权确认</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th colspan="2"> <a class="accredit_site" href="#">浙大电视台</a> 将获得以下权限： </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="checkbox ">
+                                <label >
+                                    <input type="checkbox" > 全选
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="checkbox ">
+                                <label >
+                                    <input type="checkbox" checked disabled> 获得您的头像、昵称、性别
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div >
+                    <span style="font-size: small">
+                        &nbsp &nbsp 授权后表明你已同意 <a href="#">登陆服务协议</a>
+                    </span>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal" >确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
