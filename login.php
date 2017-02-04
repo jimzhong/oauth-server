@@ -4,8 +4,6 @@
 
     session_start();
 
-    $msg = "";
-
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $username = $_POST['username'];
@@ -39,7 +37,6 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <!-- <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
     <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <!-- <link href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>登录 - 浙江大学广播电视台身份认证</title>
@@ -66,11 +63,11 @@
 
             <div class="panel-body">
                 <?php
-                if (!empty($msg)):
+                if (isset($msg)):
                     echo '<div class="alert alert-warning">';
                     echo $msg;
                     echo '</div>';
-                endif
+                endif;
                 ?>
                 <form class = "form-horizontal" role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
                     <div class="form-group">
@@ -94,6 +91,10 @@
         </div>
     </div>
 </div>
+</div>
+</div>
+
+<?php include "footer.php" ?>
 
 </body>
 </html>

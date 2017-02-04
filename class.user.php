@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 class User
 {
     private $db;
+    public $userid
     public $username;
     public $realname;
     public $email;
@@ -48,12 +49,17 @@ class User
     //     $sth->bindparam(":bbsuid", $this->$bbsuid);
     // }
 
-    // public function load_info_from_session()
-    // {
-    //     $this->bbsuid = $_SESSION['bbsuid'];
-    //     $this->username = $_SESSION['username'];
-    //     $this->email = $_SESSION['email']
-    // }
+    public function load_info_from_session()
+    {
+        $this->bbsuid = $_SESSION['bbsuid'];
+        $this->username = $_SESSION['username'];
+        $this->email = $_SESSION['email']
+    }
+
+    public function save_info_to_session()
+    {
+        
+    }
 
     public function fetch_info_from_zjuam($zjuid, $password)
     {
@@ -78,30 +84,30 @@ class User
         return false;
     }
 
-   public function is_new_user_from_bbs()
-   {
+    public function is_new_user_from_bbs()
+    {
        $sth = $this->db->prepare("SELECT id FROM users WHERE username=:username LIMIT 1");
        $sth->execute(array(':username'=>$this->username));
        return ($sth->rowCount() == 0);
-   }
+    }
 
-   public function is_new_user_from_zju()
-   {
+    public function is_new_user_from_zju()
+    {
        $sth = $this->db->prepare("SELECT id FROM users WHERE zjuid=:zjuid LIMIT 1");
        $sth->execute(array(':username'=>$this->zjuid));
        return ($sth->rowCount() == 0);
-   }
+    }
 
-   public function is_loggedin()
-   {
+    public static function is_loggedin()
+    {
       return isset($_SESSION['username']);
-   }
+    }
 
-   public function logout()
-   {
+    public static function logout()
+    {
         unset($_SESSION['username']);
         session_destroy();
         return true;
-   }
+    }
 }
 ?>
