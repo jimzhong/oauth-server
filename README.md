@@ -14,11 +14,11 @@ redirect the user to the authorization endpoint `https://auth.zjubtv.com/connect
 Name | Required | Description
 -----|---------|------
 appid| Yes  | AppID
-redirect_uri | No | not supported in this implementation
+redirect_uri | Yes | must match one redirect_uri registered for this app
 response_type | Yes | use `code` for now, may support `token` in the future
 scope | Yes | space delimited authorization scopes, currently only `baiscuserinfo.readonly`
 state | Recommend | for CSRF protection, will be copied to redirect_uri
-access_type | No | default to `online` access, may support `offline in the future`
+access_type | No | default to `online` access, may support `offline` in the future
 include_granted_scopes | No | If this is provided with the value `true`, and the authorization request is granted the authorization will include any previous authorizations granted to this user/application combination for other scopes. Default to `false`. Incremental scopes are not supported for now.
 
 On the authorization page, the user will be prompted only the first time your app requests access.
@@ -45,6 +45,7 @@ appid | Yes | AppID
 appsecret | Yes | AppSecret
 code | Yes | the authorization_code
 grant_type | Yes | use `authorization_code`
+redirect_uri | Yes | must match the redirect_uri used for getting the code
 
 An example of request:
 ```
@@ -78,7 +79,7 @@ If something is wrong, the response will be like
 {"error": "invalid code"}
 ```
 
-If the web app wants access to the user's info when the user is offline, the app should use `access_type=offline`. And the refresh_token to its database . The refresh_token will be invalidated when a user revokes the app's permission on the authorization server. Offline access is not implemented for now.
+If the web app wants access to the user's info when the user is offline, the app should use `access_type=offline`. And save the refresh_token to its database . The refresh_token will be invalidated when a user revokes the app's permission on the authorization server. Offline access is not implemented for now.
 
 #### Test access_token (optional)
 
