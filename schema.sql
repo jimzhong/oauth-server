@@ -13,19 +13,20 @@
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `userid` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `zjuid` CHAR(12) NOT NULL,    -- for integration with zjuam
-  `username` VARCHAR(255) NULL DEFAULT NULL, -- bbs username. NULL for non staff users
-  `password` VARCHAR(255) NULL DEFAULT NULL, -- not used for now
-  `realname` VARCHAR(255) NULL DEFAULT NULL,
-  `bbsuid` INTEGER NULL DEFAULT NULL,   -- NULL if is_staff is 0
-  `email` VARCHAR(255) NULL DEFAULT NULL,
+  `userid` INTEGER NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `zjuid` CHAR(12) NULL,
   `avatar_url` VARCHAR(2100) NULL DEFAULT NULL,
-  `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`username`),  -- MySQL can support unique key with NULL values
-  UNIQUE KEY (`zjuid`),
+  `phone_long` CHAR(12) NOT NULL,
+  `phone_short` CHAR(7) NULL DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY (`username`),
+  UNIQUE KEY (`email`),
+  UNIQUE KEY (`zjuid`)
 ) CHARACTER SET utf8mb4;
+
 
 -- ---
 -- Table 'apps'
@@ -35,64 +36,106 @@ CREATE TABLE `users` (
 DROP TABLE IF EXISTS `apps`;
 
 CREATE TABLE `apps` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `name` VARCHAR(512) NOT NULL,
-  `vendor` VARCHAR(512) NOT NULL DEFAULT "ZJUBTV",
-  `secret` VARCHAR(255) NOT NULL,
-  `redirect_uri` VARCHAR(2100) NOT NULL,
+  `appid` INTEGER NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(256) NOT NULL,
+  `publisher` VARCHAR(256) NOT NULL,
+  `secret` CHAR(256) NOT NULL,
   `homepage_uri` VARCHAR(2100) NULL DEFAULT NULL,
   `logo_uri` VARCHAR(2100) NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`name`, `vendor`),
-  UNIQUE KEY (`secret`),
+  PRIMARY KEY (`appid`),
+  UNIQUE KEY (`name`, `publisher`)
 ) CHARACTER SET utf8mb4;
+
 
 -- ---
 -- Table 'authorization'
 --
 -- ---
---
--- DROP TABLE IF EXISTS `authorization`;
---
--- CREATE TABLE `authorization` (
---   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
---   `user_id` INTEGER NULL DEFAULT NULL,
---   `app_id` INTEGER NULL DEFAULT NULL,
---   `refresh_token` CHAR(70) NOT NULL,
---   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---   `scope` CHAR(70) NULL DEFAULT NULL,
---   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
---   PRIMARY KEY (`id`),
---   UNIQUE KEY (`user_id`, `app_id`, `scope`),
--- ) CHARACTER SET utf8mb4;
 
+DROP TABLE IF EXISTS `authorization`;
+
+CREATE TABLE `authorization` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `userid` INTEGER NOT NULL,
+  `appid` INTEGER NOT NULL,
+  `refresh_token` CHAR(128) NOT NULL,
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `scopeid` INTEGER NOT NULL,
+  PRIMARY KEY (`id`)
+) CHARACTER SET utf8mb4;
+
+-- ---
+-- Table 'staff'
+--
+-- ---
+
+DROP TABLE IF EXISTS `staff`;
+
+-- only admin can edit the staff table
+
+CREATE TABLE `staff` (
+  `zjuid` CHAR(12) NOT NULL,
+  `name` VARCHAR(128) NOT NULL,
+  `position` VARCHAR(128) NULL DEFAULT NULL,
+  `department` VARCHAR(128) NULL DEFAULT NULL,
+  `retired` TINYINT(1) NOT NULL DEFAULT 0,
+  `bbs_uid` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`zjuid`)
+) CHARACTER SET utf8mb4;
+
+-- ---
+-- Table 'scopes'
+--
+-- ---
 
 DROP TABLE IF EXISTS `scopes`;
 
 CREATE TABLE `scopes` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `name` CHAR(255) NOT NULL,
+  `scopeid` INTEGER NOT NULL AUTO_INCREMENT,
+  `name` CHAR(64) NOT NULL,
   `description` VARCHAR(1024) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`name`),
+  PRIMARY KEY (`scopeid`),
+  UNIQUE KEY (`name`)
+) CHARACTER SET utf8mb4;
+
+-- ---
+-- Table 'redirect_uris'
+--
+-- ---
+
+DROP TABLE IF EXISTS `redirections`;
+
+CREATE TABLE `redirect_uris` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `appid` INTEGER NOT NULL,
+  `redirect_uri` VARCHAR(2100) NOT NULL,
+  PRIMARY KEY (`id`)
 ) CHARACTER SET utf8mb4;
 
 -- ---
 -- Foreign Keys
 -- ---
---
--- ALTER TABLE `authorization` ADD FOREIGN KEY (user_id) REFERENCES `users` (`id`);
--- ALTER TABLE `authorization` ADD FOREIGN KEY (app_id) REFERENCES `apps` (`id`);
 
+ALTER TABLE `users` ADD FOREIGN KEY (zjuid) REFERENCES `staff` (`zjuid`);
+ALTER TABLE `authorization` ADD FOREIGN KEY (userid) REFERENCES `users` (`userid`);
+ALTER TABLE `authorization` ADD FOREIGN KEY (appid) REFERENCES `apps` (`appid`);
+ALTER TABLE `authorization` ADD FOREIGN KEY (scopeid) REFERENCES `scopes` (`scopeid`);
+ALTER TABLE `redirections` ADD FOREIGN KEY (appid) REFERENCES `apps` (`appid`);
 
 -- ---
 -- Test Data
 -- ---
 
--- INSERT INTO `users` (`id`,`username`,`email`,`bbsuid`,`realname`,`zjuid`,`avatar_url`,`is_staff`,`is_admin`) VALUES
--- ('','','','','','','','','');
--- INSERT INTO `apps` (`id`,`name`,`publisher`,`secret`,`redirect_uri`,`homepage_uri`,`logo_uri`) VALUES
+-- INSERT INTO `users` (`userid`,`username`,`email`,`password`,`zjuid`,`avatar_url`,`phone_long`,`phone_short`) VALUES
+-- ('','','','','','','','');
+-- INSERT INTO `apps` (`appid`,`name`,`publisher`,`secret`,`homepage_uri`,`logo_uri`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `authorization` (`id`,`userid`,`appid`,`refresh_token`,`create_time`,`update_time`,`scopeid`) VALUES
 -- ('','','','','','','');
--- INSERT INTO `authorization` (`id`,`user_id`,`app_id`,`refresh_token`,`create_time`,`scope`,`update_time`) VALUES
--- ('','','','','','','');
+-- INSERT INTO `staff` (`zjuid`,`name`,`position`,`department`,`retired`,`bbs_uid`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `scopes` (`scopeid`,`name`,`description`) VALUES
+-- ('','','');
+-- INSERT INTO `redirect_uris` (`id`,`appid`,`redirect_uri`) VALUES
+-- ('','','');
