@@ -5,7 +5,7 @@ require 'vendor/autoload.php';
 class User
 {
     private $db;
-    public $userid
+    public $userid;
     public $username;
     public $realname;
     public $email;
@@ -18,6 +18,7 @@ class User
     {
       $this->db = $dbh;
     }
+
 
     // public function register($fname,$lname,$uname,$umail,$upass)
     // {
@@ -53,12 +54,12 @@ class User
     {
         $this->bbsuid = $_SESSION['bbsuid'];
         $this->username = $_SESSION['username'];
-        $this->email = $_SESSION['email']
+        $this->email = $_SESSION['email'];
     }
 
     public function save_info_to_session()
     {
-        
+
     }
 
     public function fetch_info_from_zjuam($zjuid, $password)

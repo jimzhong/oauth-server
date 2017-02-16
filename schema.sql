@@ -14,10 +14,10 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `userid` INTEGER NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
+  `username` VARCHAR(128) NOT NULL,
+  `email` VARCHAR(128) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `zjuid` CHAR(12) NULL,
+  `zjuid` CHAR(12) NULL DEFAULT NULL,
   `avatar_url` VARCHAR(2100) NULL DEFAULT NULL,
   `phone_long` CHAR(12) NOT NULL,
   `phone_short` CHAR(7) NULL DEFAULT NULL,
@@ -37,13 +37,13 @@ DROP TABLE IF EXISTS `apps`;
 
 CREATE TABLE `apps` (
   `appid` INTEGER NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(256) NOT NULL,
-  `publisher` VARCHAR(256) NOT NULL,
-  `secret` CHAR(256) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `publisher` VARCHAR(255) NOT NULL,
+  `secret` CHAR(128) NOT NULL,
+  `description` VARCHAR(1024) NULL DEFAULT NULL,
   `homepage_uri` VARCHAR(2100) NULL DEFAULT NULL,
   `logo_uri` VARCHAR(2100) NULL DEFAULT NULL,
-  PRIMARY KEY (`appid`),
-  UNIQUE KEY (`name`, `publisher`)
+  PRIMARY KEY (`appid`)
 ) CHARACTER SET utf8mb4;
 
 
@@ -81,7 +81,8 @@ CREATE TABLE `staff` (
   `department` VARCHAR(128) NULL DEFAULT NULL,
   `retired` TINYINT(1) NOT NULL DEFAULT 0,
   `bbs_uid` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`zjuid`)
+  PRIMARY KEY (`zjuid`),
+  KEY (`name`)
 ) CHARACTER SET utf8mb4;
 
 -- ---
@@ -93,7 +94,7 @@ DROP TABLE IF EXISTS `scopes`;
 
 CREATE TABLE `scopes` (
   `scopeid` INTEGER NOT NULL AUTO_INCREMENT,
-  `name` CHAR(64) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
   `description` VARCHAR(1024) NOT NULL,
   PRIMARY KEY (`scopeid`),
   UNIQUE KEY (`name`)
@@ -117,7 +118,7 @@ CREATE TABLE `redirect_uris` (
 -- Foreign Keys
 -- ---
 
-ALTER TABLE `users` ADD FOREIGN KEY (zjuid) REFERENCES `staff` (`zjuid`);
+--ALTER TABLE `users` ADD FOREIGN KEY (zjuid) REFERENCES `staff` (`zjuid`);
 ALTER TABLE `authorization` ADD FOREIGN KEY (userid) REFERENCES `users` (`userid`);
 ALTER TABLE `authorization` ADD FOREIGN KEY (appid) REFERENCES `apps` (`appid`);
 ALTER TABLE `authorization` ADD FOREIGN KEY (scopeid) REFERENCES `scopes` (`scopeid`);
