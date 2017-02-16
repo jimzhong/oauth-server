@@ -53,6 +53,18 @@ function exchange_access_token($appid, $redirect_uri, string $access_code)
     return false;
 }
 
+function get_userid_by_access_token($access_token)
+{
+    global $redis;
+    return $redis->hGet("access_token:".$access_token, "userid");
+}
+
+function get_scopes_by_access_token($access_token)
+{
+    global $redis;
+    return $redis->sMembers("access_token:".$access_token.":scopes");
+}
+
 // if (!debug_backtrace()) {
 //     $code = new_access_code(123, 111, "aaa", ["email", "phone"]);
 //     echo $code;

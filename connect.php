@@ -14,6 +14,7 @@
     $redirect_uri = htmlspecialchars(urldecode($_GET["redirect_uri"]));
     $response_type = htmlspecialchars($_GET["response_type"]);
     $scope = htmlspecialchars(urldecode($_GET["scope"]));
+    $state = htmlspecialchars($_GET["state"]);
 
     $appinfo = get_app_info_by_appid($appid, $dbh);
     if ($appinfo == false)
@@ -32,7 +33,7 @@
         $scopes = explode(" ", $scope);
         $scope_descriptions = [];
         foreach ($scopes as $ascope) {
-            $desc = get_scope_description($ascope);
+            $desc = get_scope_description($ascope, $dbh);
             // only display valid scopes
             if ($desc)
                 $scope_descriptions[] = $desc;
@@ -90,6 +91,7 @@
                         <input type="hidden" value="<?php echo urlencode($scope) ?>" name="scope" />
                         <input type="hidden" value="<?php echo urlencode($redirect_uri) ?>" name="redirect_uri" />
                         <input type="hidden" value="<?php echo $response_type ?>" name="response_type" />
+                        <input type="hidden" value="<?php echo $state ?>" name="state" />
                         <button type="submit" class="btn btn-primary">允许</button>
                         <button class="btn btn-default">拒绝</button>
                     </form>
