@@ -1,6 +1,5 @@
 <?php
     include_once "db.php";
-    // include_once 'class.user.php';
     include_once "app.php";
     include_once "show_error.php";
 

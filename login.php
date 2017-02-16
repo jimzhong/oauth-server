@@ -1,25 +1,28 @@
 <?php
-    include("config.php");
-    include_once 'class.user.php';
+    require_once "db.php";
+    require_once "user.php";
 
     session_start();
 
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        $username = $_POST['username'];
+        $username = trim($_POST['username']);
         $password = $_POST['password'];
-        $user = new User($dbh);
 
-        if($user->fetch_info_from_bbs($username, $password))
+        $user_info = get_user_info_by_username($username, $dbh);
+
+        // var_dump($user_info);
+
+        if($user_info && password_verify($password, $user_info["password"]))
         {
-            $_SESSION['username'] = $user->username;
-            $_SESSION['email'] = $user->email;
-            $_SESSION['bbsuid'] = $user->bbsuid;
-            if ($user->is_new_user_from_bbs())
+            user_login($user_info["userid"], $user_info["username"]);
+
+            if (isset($_GET["next"]))
             {
-                header("location: register.php");
+                // TODO: check validity of next location
+                header("location: ".urldecode($_GET["next"]));
             } else {
-                header("location: dashboard.php");
+                header("location: home.php");
             }
         } else {
             $msg = "用户名或密码不正确";
@@ -69,7 +72,7 @@
                     echo '</div>';
                 endif;
                 ?>
-                <form class = "form-horizontal" role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
+                <form class = "form-horizontal" role = "form" method = "post">
                     <div class="form-group">
                         <div class="col-xs-12">
                             <input type="text" class="form-control" name="username" placeholder="用户名" required autofocus>
@@ -83,13 +86,15 @@
                     <br>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <button class = "btn btn-primary btn-block" type = "submit" name = "login">登录</button>
+                            <button class="btn btn-primary" type="submit" name="login">登录</button>
+                            <a class="btn btn-default" href="/register.php">注册</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 </div>
