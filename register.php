@@ -54,16 +54,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <html>
   <head>
      <title>注册 - 浙江大学广播电视台身份认证</title>
-     <meta $emailcharset="utf-8">
+     <meta charset="utf-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
-     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-     <!-- <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
-     <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <style>
-     </style>
+     <link href="/css/style.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+     <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+     <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
   </head>
 
 <body>
@@ -72,6 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         <div class="page-header">
           <h1>新用户注册</h1>
         </div>
+        <div class="row">
           <form method="post">
               <div class="col-xs-12">
               <?php
@@ -123,14 +123,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
             <div class="form-group">
               <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+                <button type="submit" class="btn btn-primary btn-block">提交</button>
               </div>
             </div>
           </form>
 
-    </div>
+      </div>
 
     <?php include "footer.php" ?>
+    </div>
 
 </body>
 

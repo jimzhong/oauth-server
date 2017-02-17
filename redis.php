@@ -1,7 +1,6 @@
 <?php
 
-define("ACCESS_CODE_TIMEOUT", 300);
-define("ACCESS_TOKEN_TIMEOUT", 3600);
+require_once "config.php";
 
 $redis = new Redis();
 

@@ -1,5 +1,43 @@
 <?php
 
+function get_username_or_redirect()
+{
+    session_start();
+
+    if (!isset($_SESSION["username"]))
+    {
+        header("location: login.php");
+        exit();
+    }
+    else {
+        return $_SESSION["username"];
+    }
+}
+
+// return true on success, false on failure
+function change_password($userid, $oldpw, $newpw, $dbh)
+{
+    $user_info = get_user_info_by_userid($userid, $dbh);
+    if (password_verify($oldpw, $user_info["password"]))
+    {
+        $sth = $dbh->prepare("UPDATE users SET password=:password WHERE userid=:userid");
+        $sth->execute([":password"=>password_hash($newpw, PASSWORD_DEFAULT) , ":userid"=>$userid]);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function get_user_info_by_userid($userid, $dbh)
+{
+    $sth = $dbh->prepare("SELECT * FROM users WHERE userid=:userid LIMIT 1");
+    $sth->execute([":userid" => $userid]);
+    $row = $sth->fetch(PDO::FETCH_ASSOC);
+
+    return $row;
+}
+
 function get_user_info_by_username($username, $dbh)
 {
     $sth = $dbh->prepare("SELECT * FROM users WHERE username=:username LIMIT 1");
