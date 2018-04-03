@@ -3,35 +3,38 @@ OAuth 2.0 Server
 
 ## Background
 
-OAuth 2.0 is a protocol for authorization. There is a centeral authorization server and various web apps. Each app has a unique AppID and an AppSecret. When a user want to use one web app. The user will be redirected to a page at the authorization server. If the user is authenticated. The user will be prompted to give permission to the app. If permission is granted, the authorization server will redirect the user to a URL on the web app with a special code. The web app can then get the user's information by sending requests to the authorization server with its AppID, AppSecret and the code.
+OAuth 2.0 is a protocol for authorization. There is a centeral authorization server and various web apps. Each app has a unique AppID and an AppSecret. When a web app is aroused, it will redirect to a page at the authorization server. The user will be either prompted to give permission to the app if authenticated, or redirected to a URL with a speical code by authorizatio server if not. The web app can then get the user's information by sending requests to the authorization server with its AppID, AppSecret and the code.
 
 ## Flow
 
 ### 1. Get the authorization code
 
-redirect the user to the authorization endpoint `https://auth.zjubtv.com/connect.php?appid=APPID&response_type=code&scope=SCOPE&state=STATE`
+Redirect the user to the authorization endpoint 
+  ~~~
+  https://auth.zjubtv.com/connect.php?appid=APPID&response_type=code&scope=SCOPE&state=STATE
+  ~~~
 
 Name | Required | Description
 -----|---------|------
 appid| Yes  | AppID
-redirect_uri | Yes | must match one redirect_uri registered for this app
+redirect_uri | Yes | must match the redirect_uri registered for this app
 response_type | Yes | use `code` for now, may support `token` in the future
 scope | Yes | space delimited authorization scopes, currently only `baiscuserinfo.readonly`
 state | Recommend | for CSRF protection, will be copied to redirect_uri
 access_type | No | default to `online` access, may support `offline` in the future
-include_granted_scopes | No | If this is provided with the value `true`, and the authorization request is granted the authorization will include any previous authorizations granted to this user/application combination for other scopes. Default to `false`. Incremental scopes are not supported for now.
+include_granted_scopes | No | If it is `true` and the authorization request is granted, the authorization will include any previous authorizations granted to this user/application combination for other scopes. Incremental scopes are not supported for now. (Default: `false`)
 
 On the authorization page, the user will be prompted only the first time your app requests access.
 
 If the user gives permission to this app, the authorization endpoint will redirect the user to `REDIRECT_URI?code=CODE&state=STATE`. The `REDIRECT_URI` is the redirect URI registered for that app in the database.
 
-If anything goes wrong, the user agent will be redirected to `REDIRECT_URI?error=ERRORMSG`. The possible values of `error` is defined in the RFC, common values are:
+If anything goes wrong, the user agent will be redirected to `REDIRECT_URI?error=ERRORMSG`. The possible values of `error` is defined in the RFC. Common values are:
 
 Value | Description
 -----| -------------
 invalid_appid | AppID is invalid, no such app
 access_denied | The user denies the authorization request
-invalid_request | The request is missing a required parameter or malformed
+invalid_request | The request misses a required parameter or malformed
 invalid_scope | The requested scope is invalid, unknown, or malformed
 temporarily_unavailable | The authorization server is currently unable to handle the request
 
@@ -58,12 +61,12 @@ grant_type=authorization_code&code=tGzv3JOkF0XG5Qx2TlKWIA&appid=s6BhdRkqt3&appse
 
 The lifetime of an authorization_code is only 300 seconds and an authorization_code can only be used once.
 
-The response body is in json format, for example
+The response body is in JSON format, for example
 ```json
 {
   "access_token":"1/fFAGRNJru1FTz70BzhT3Zg",
   "expires_in":3920,
-  "user_id": 20
+  "user_id":20
 }
 ```
 
@@ -79,7 +82,7 @@ If something is wrong, the response will be like
 {"error": "invalid code"}
 ```
 
-If the web app wants access to the user's info when the user is offline, the app should use `access_type=offline`. And save the refresh_token to its database . The refresh_token will be invalidated when a user revokes the app's permission on the authorization server. Offline access is not implemented for now.
+If the web app wants access to the information of an offline user, the app should use `access_type=offline`, and save the refresh_token to its database. The refresh_token will be invalidated when a user revokes the app's permission on the authorization server. Offline access has not been implemented for now.
 
 #### Test access_token (optional)
 
@@ -91,10 +94,10 @@ userid | the ID of the user
 access_token | access_token
 appid | AppID
 
-Successful responses have http status code 200 with a body saying OK.
-Failed responses have http status code 401 with a body saying unauthorized.
+* Success: HTTP status code 200, and "OK" in the response body.
+* Failure: HTTP status code 401, and "unauthorized" in the response body.
 
-#### Get a new access_token with a refresh_token (not implemented for now)
+#### Get a new access_token with a refresh_token (not supported for now)
 
 POST to `https://auth.zjubtv.com/refresh_token.php`. Below is an example
 
@@ -109,15 +112,15 @@ appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN&appsecret=7Fjfp
 Successful responses will be like
 ```json
 {
-"access_token":"ACCESS_TOKEN",
-"expires_in": EXPIRE_TIME,
-"refresh_token":"REFRESH_TOKEN",
-"userid":"USERID",
-"scope":"SCOPE"
+  "access_token":"ACCESS_TOKEN",
+  "expires_in": EXPIRE_TIME,
+  "refresh_token":"REFRESH_TOKEN",
+  "userid":"USERID",
+  "scope":"SCOPE"
 }
 ```
 
-If there is a valid access_token, the `EXPIRE_TIME` reflects its remaining time, and the current access_token is return. Otherwise, a new access_token is generated and returned, with the `EXPIRE_TIME` set to 3600.
+If there is a valid access_token, the `EXPIRE_TIME` reflects its remaining time, and the current access_token is returned. Otherwise, a new access_token is generated and returned, with the `EXPIRE_TIME` set to 3600.
 
 Error messages are like
 ```json
@@ -125,30 +128,30 @@ Error messages are like
 ```
 
 
-### 3. Get users' basic information
+### 3. Get basic information from users
 
-Web apps can get users' basic infomation in json format by POSTING to `https://auth.zjubtv.com/basicuserinfo.php`.
+Web apps can get users' basic information in JSON format by POSTing to `https://auth.zjubtv.com/basicuserinfo.php`.
 
 Name | Description
 -----|------
 userid | the ID of the user
 access_token | access_token
 
-A successful responses contains at least the following infomation about the user. More fields will be added in the future.
+A successful responses contain at least the following information about the user. More fields will be added in the future.
 ```json
 {
-"userid":"USERID",
-"realname":"REALNAME",
-"is_staff": true or false,
-"is_admin": true or false,
-"zjuid": 31300000123,
-"email": "xxx@xxx.com"
+  "userid":"USERID",
+  "realname":"REALNAME",
+  "is_staff":true or false,
+  "is_admin":true or false,
+  "zjuid":31300000123,
+  "email":"xxx@xxx.com"
 }
 ```
 
-## The length of parameters
+## The Length of Parameters
 
-Name | Max length in ASCII characters
+Name | Maximum length in ASCII characters
 -----|------------------
 App ID| 16
 App Secret | 64
